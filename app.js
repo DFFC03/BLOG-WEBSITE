@@ -13,6 +13,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
+app.get('/add', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'add.html'));
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
