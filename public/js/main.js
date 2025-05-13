@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="post ${post.category}">
                 ${
                     post.image
-                    ? '<img class="post-img" src="${post.image}" alt="${post.title}"'
+                    ? `<img class="post-img" src="${post.image}" alt="${post.title}"`
                     : ""
                 }
                 <h3 class="post-category">${post.category}</h3>
