@@ -65,6 +65,10 @@ app.get('/post/:title', (req, res) => {
   );
 });
 
+app.get('/post-details/:title', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'post-details.html'));
+});
+
 app.post('/add', upload.single('image'), (req, res) => {
   const {title, category, content} =req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : null;
