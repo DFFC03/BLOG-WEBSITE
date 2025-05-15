@@ -3,9 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Post Details</title>
+    <!--Link to CSS-->
+    <link rel="stylesheet" href="/css/style.css" />
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
 </head>
 <body>
-    
+    <!-- Header -->
+    <header>
+        <div class="nav container">
+            <!-- Logo -->
+            <a href="/" class="logo">Ve<span>nom</span></a>
+            <!-- Nav Right -->
+            <div class="nav-right">
+                <a href="/admin" class="admin-btn"><i class='bx bx-user'></i></a>
+                <a href="/add" class="write-btn"><i class='bx bx-pencil' ></i>Write</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <section class="post-header">
+        <div class="header-content post-container">
+            <h2 id="post-category"></h2>
+            <!-- Title -->
+            <h1 class="header-title" id="post-title"></h1>
+            <!-- Post Image -->
+            <div class="post-image" id="post-image"></div>
+        </div>
+    </section>
+    <section class="post-content post-container" id="post-content"></section>
+
+    <!-- Share -->
+     <div class="share post-container">
+        <span class="share-title">Share this article</span>
+        <div class="social">
+            <a href="#"><i class="bx bxl-facebook"></i></a>
+            <a href="#"><i class="bx bxl-twitter"></i></a>
+            <a href="#"><i class="bx bxl-instagram"></i></a>
+            <a href="#"><i class="bx bxl-linkedin"></i></a>
+        </div>
+     </div>
+
+    <!-- Footer -->
+    <div class="footer container">
+        <p>&#169; CarpoolVenom</p>
+        <div class="social">
+            <a href="#"><i class="bx bxl-facebook"></i></a>
+            <a href="#"><i class="bx bxl-twitter"></i></a>
+            <a href="#"><i class="bx bxl-instagram"></i></a>
+            <a href="#"><i class="bx bxl-linkedin"></i></a>
+        </div>
+    </div>
+    <!-- Link to JS-->
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            const postTitle = decodeURIComponent(
+                window.location.pathname.split("/").pop()
+            )
+            .replace(/-/g, " ")
+            .trim();
+            fetch(`/post/${encodeURIComponent(postTitle)}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((post) => {
+                document.getElementById("post-title").innerText = post.title;
+                document.getElementById("post-category").innerText = post.category;
+                if (post.image) {
+                    document.getElementById(
+                        "post-image"
+                    ).innerHTML = `<img src="${post.image}" alt="${post.title}">`;
+                }
+                document.getElementById("post-content").innerHTML = post.content;
+            })
+            .catch((error) => {
+                console.error("Error fetching post details:", error);
+                document.getElementById("post-content").innerText = "Error fetching post details";
+            });
+        });
+    </script>
 </body>
 </html>

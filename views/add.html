@@ -30,7 +30,7 @@
             theme: 'snow',
         });
         var form = document.querySelector('form');
-        fomr.onsubmit = function() {
+        form.onsubmit = function() {
             var content = document.querySelector('input[name=content]')
             content.value = quill.root.innerHTML;
         };

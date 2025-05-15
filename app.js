@@ -26,8 +26,8 @@ db.serialize(() => {
       title TEXT NOT NULL,
       category TEXT,
       content TEXT NOT NULL,
-      image TETXT,
-      created_at DATATIME DEFAULT CURRENT_TIMESTAMP
+      image TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
 });
 
@@ -65,11 +65,11 @@ app.get('/post/:title', (req, res) => {
   );
 });
 
-app.get('/post-details/:title', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'post-details.html'));
+app.get("/post-details/:title", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "post-details.html"));
 });
 
-app.post('/add', upload.single('image'), (req, res) => {
+app.post("/add", upload.single("image"), (req, res) => {
   const {title, category, content} =req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : null;
 
