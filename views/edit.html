@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Post</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="edit-post">
+    <h1>Edit Post</h1>
+    <form id="edit-form" method="POST" enctype="multipart/form-data">
+      <label>Title:</label>
+      <input type="text" name="title" required />
+      <label>Category:</label>
+      <input type="text" name="category" />
+      <label>Content:</label>
+      <textarea name="content" rows="5" required></textarea>
+      <label>Change Image (optional):</label>
+      <input type="file" name="image" />
+      <button type="submit">Update Post</button>
+    </form>
+    <a href="/admin">Back to Admin Panel</a>
+  </div>
+
+ <script>
+  const postId = window.location.pathname.split("/").pop();
+
+  // Cargar datos del post existente
+  fetch(`/post/id/${postId}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Post not found");
+      return res.json();
+    })
+    .then((post) => {
+      document.querySelector("input[name='title']").value = post.title;
+      document.querySelector("input[name='category']").value = post.category;
+      document.querySelector("textarea[name='content']").value = post.content;
+    })
+    .catch((err) => {
+      alert("Error loading post: " + err.message);
+      window.location.href = "/admin";
+    });
+
+  // Envío del formulario con o sin imagen
+  document.getElementById("edit-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch(`/update/${postId}`, {
+      method: "POST",
+      body: formData,
+    })
+    .then((res) => {
+      if (!res.ok) throw new Error("Error updating post");
+      return res.json();
+    })
+    .then((data) => {
+      alert("Post updated successfully");
+      window.location.href = "/admin";
+    })
+    .catch((err) => {
+      alert("Error: " + err.message);
+    });
+  });
+</script>
+
+</body>
+</html>

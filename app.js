@@ -9,6 +9,7 @@ const db = new sqlite3.Database('./database.db');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(express.json());
 
 // Configure Multer For Image File Uploads
 const storage = multer.diskStorage({
@@ -94,12 +95,61 @@ app.post("/delete/:id", (req, res) => {
     res.status(200).send({ message: "Post deleted successfully" });
   })
 })
+// Update Route con soporte para imagen (Multer)
+app.post("/update/:id", upload.single("image"), (req, res) => {
+  const id = req.params.id;
+  const { title, category, content } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
+
+  let query, params;
+  if (image) {
+    query = `UPDATE posts SET title = ?, category = ?, content = ?, image = ? WHERE id = ?`;
+    params = [title, category, content, image, id];
+  } else {
+    query = `UPDATE posts SET title = ?, category = ?, content = ? WHERE id = ?`;
+    params = [title, category, content, id];
+  }
+
+  db.run(query, params, function (err) {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (this.changes === 0) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.status(200).json({ message: "Post updated successfully" });
+  });
+});
 
 app.get('/add', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'add.html'));
 });
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin.html'));
+});
+
+app.get("/edit/:id", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "edit.html"));
+});
+
+
+// Obtener un post por ID
+app.get("/post/id/:id", (req, res) => {
+  const postId = req.params.id;
+  db.get("SELECT * FROM posts WHERE id = ?", [postId], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: "Database error" });
+      return;
+    }
+    if (!row) {
+      res.status(404).json({ error: "Post not found" });
+      return;
+    }
+    res.json(row);
+  });
 });
 
 const PORT = process.env.PORT || 3000;

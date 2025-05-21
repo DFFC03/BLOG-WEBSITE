@@ -109,7 +109,7 @@ header.shadow .admin-btn .bx{
     margin-top: 1.5rem;
 }
 .search-box .bx{
-    font-size: 20px;
+    font-size: 10px;
     color: var(--text-color);
 }
 .search-box input{
@@ -118,7 +118,7 @@ header.shadow .admin-btn .bx{
     outline: none;
     background: transparent;
     font-size: 0.9rem;
-    padding: 10px 0;
+    padding: 10px 200px;
 }
 /* Posts */
 .posts{
@@ -403,6 +403,88 @@ header.shadow .admin-btn .bx{
     padding: 4px 10px;
     border-radius: 8px;
 }
+.edit-button{
+    padding: 0.5rem 1rem;
+    background: var(--second-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .3s ease-in-out;
+}
+.edit-button:hover{
+    background: var(--text-color);
+}
+.edit-post {
+    padding: 3rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: var(--container-color);
+    min-height: 100vh;
+}
+
+.edit-post h1 {
+    font-size: 2rem;
+    color: var(--bg-color);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.edit-post form {
+    width: 95%;
+    max-width: 640px;
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px hsl(355deg 25% 15% / 10%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.edit-post form input[type="text"],
+.edit-post form input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.edit-post #editor-container {
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background: white;
+}
+
+.edit-post form button {
+    padding: 0.75rem 1.5rem;
+    background: var(--second-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background .3s ease-in-out;
+}
+
+.edit-post form button:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.edit-post a {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: var(--second-color);
+    text-align: center;
+    display: block;
+    text-decoration: none;
+}
 /* Responsive */
 @media (max-width: 1060px) {
     .container{
@@ -410,7 +492,7 @@ header.shadow .admin-btn .bx{
         width: 95%;
     }
     .home-content h2{
-        font-size: 3rem;
+        font-size: 5rem;
     }
 }
 @media (max-width: 920px) {
@@ -457,7 +539,8 @@ header.shadow .admin-btn .bx{
         margin-top: 9rem !important;
     }
     .add-post h1,
-    .admin-panel h1{
+    .admin-panel h1,
+    .edit-post h1{
         font-size: 1.5rem;
     }
 }

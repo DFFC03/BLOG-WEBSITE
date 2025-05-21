@@ -46,6 +46,7 @@
                             <td>${post.title}</td>
                             <td>${post.category || "No Category"}</td>
                             <td>
+                                 <a href="/edit/${post.id}" class="edit-button">Edit</a>
                                 <button class="delete-button" data-id="${
                                     post.id
                                 }">Delete</button>
@@ -76,8 +77,47 @@
                     });
                 });
             });
+            // Edit Post event listener
+            document.querySelectorAll(".edit-button").forEach((button) => {
+                button.addEventListener("click", function () {
+                const row = this.closest("tr");
+                const postId = this.getAttribute("data-id");
+                const titleCell = row.children[1];
+                const categoryCell = row.children[2];
+
+                const currentTitle = titleCell.textContent;
+                const currentCategory = categoryCell.textContent;
+
+                const newTitle = prompt("Edit Title:", currentTitle);
+                const newCategory = prompt("Edit Category:", currentCategory);
+
+                if (newTitle !== null && newCategory !== null) {
+                    fetch(`/update/${postId}`, {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                title: newTitle,
+                                category: newCategory,
+                            }),
+                        })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Error updating post");
+                            }
+                            // Update table cells
+                            titleCell.textContent = newTitle;
+                            categoryCell.textContent = newCategory;
+                        })
+                        .catch((error) => {
+                            console.error("Update failed:", error);
+                        });
+                }
+            });
         });
     });
+});
     </script>
 </body>
 </html>
